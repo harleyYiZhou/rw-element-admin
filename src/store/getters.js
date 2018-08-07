@@ -1,5 +1,6 @@
 const getters = {
   sidebar: state => state.app.sidebar,
+  heading: state => state.app.heading,
   language: state => state.app.language,
   device: state => state.app.device,
   visitedViews: state => state.tagsView.visitedViews,

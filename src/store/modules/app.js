@@ -7,7 +7,8 @@ const app = {
       withoutAnimation: false
     },
     device: 'desktop',
-    language: Cookies.get('language') || 'en'
+    language: Cookies.get('language') || 'en',
+    heading: false
   },
   mutations: {
     TOGGLE_SIDEBAR: state => {
@@ -30,6 +31,9 @@ const app = {
     SET_LANGUAGE: (state, language) => {
       state.language = language
       Cookies.set('language', language)
+    },
+    TOGGLE_HEADING: state =>{
+      state.heading=!state.heading;
     }
   },
   actions: {
@@ -44,6 +48,9 @@ const app = {
     },
     setLanguage({ commit }, language) {
       commit('SET_LANGUAGE', language)
+    },
+    toggleHeading({commit}){
+      commit('TOGGLE_HEADING');
     }
   }
 }

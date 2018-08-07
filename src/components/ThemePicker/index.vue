@@ -25,6 +25,7 @@ export default {
       console.log(themeCluster, originalCluster)
       const getHandler = (variable, id) => {
         return () => {
+          console.log(this)
           const originalCluster = this.getThemeCluster(ORIGINAL_THEME.replace('#', ''))
           const newStyle = this.updateStyle(this[variable], originalCluster, themeCluster)
 

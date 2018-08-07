@@ -47,57 +47,74 @@ export default new Router({
 
 export const asyncRouterMap = [
   {
-    path: '/permission',
+    path: '/system',
     component: Layout,
     meta: {
-      title: 'permission',
-      icon: 'permission'
-    },
-    children: [
-      {
-        path: 'user',
-        component: () => import('@/views/permission/user'),
-        name: 'user',
-        meta: {
-          title: 'user'
-        }
-      },
-      {
-        path: 'roles',
-        component: () => import('@/views/permission/roles'),
-        name: 'roles',
-        meta: {
-          title: 'roles'
-        }
-      },
+      title: 'system',
+      icon: 'system'
+    }, children: [
       {
         path: 'permission',
-        component: () => import('@/views/permission/permission'),
-        name: 'permission',
+        component: () => import('@/views/permission/index'),
         meta: {
-          title: 'permission'
-        }
+          title: 'permission',
+          icon: 'permission'
+        },
+        children: [
+          {
+            path: 'user',
+            component: () => import('@/views/permission/user'),
+            name: 'user',
+            meta: {
+              title: 'user'
+            }
+          },
+          {
+            path: 'roles',
+            component: () => import('@/views/permission/roles'),
+            name: 'roles',
+            meta: {
+              title: 'roles'
+            }
+          },
+          {
+            path: 'permission',
+            component: () => import('@/views/permission/permission'),
+            name: 'permission',
+            meta: {
+              title: 'permission'
+            }
+          },
+          {
+            path: 'rules',
+            component: () => import('@/views/permission/rules'),
+            name: 'rules',
+            meta: {
+              title: 'rules'
+            }
+          }
+        ]
       },
       {
-        path: 'rules',
-        component: () => import('@/views/permission/rules'),
-        name: 'rules',
+        path: 'menu',
+        component: () => import('@/views/menu/index'),
+        name: 'menu',
         meta: {
-          title: 'rules'
+          title: 'menu', icon: 'menu'
         }
       }
     ]
   },
   {
-    path: '/menu',
+    path: '/iframe',
     component: Layout,
     children: [
       {
         path: 'index',
-        component: () => import('@/views/menu/index'),
-        name: 'menu',
+        name: 'iframe',
+        component: ()=>import('@/views/iframe/index'),
         meta: {
-          title: 'menu', icon: 'menu'
+          title: 'iframe',icon: 'iframe'
         }
       }
     ]

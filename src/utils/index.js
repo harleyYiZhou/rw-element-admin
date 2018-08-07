@@ -269,3 +269,8 @@ export function deepClone(source) {
 export function uniqueArr(arr) {
   return Array.from(new Set(arr))
 }
+
+//清除字符串前后端的空格
+export default function trim(string){
+  return string.replace(/(^\s*)|(\s*$)/g, "");
+}
