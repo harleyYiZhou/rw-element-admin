@@ -46,6 +46,7 @@
 
 <script>
 export default {
+  name: 'rules',
   data() {
     return {
       permissionDialog: false,

@@ -66,7 +66,8 @@ export default {
     user: '用户管理',
     rules: '规则管理',
     menu: '菜单管理',
-    system: '系统管理'
+    system: '系统管理',
+    iframe: 'SLV系统'
   },
   navbar: {
     logOut: '退出登录',
@@ -120,10 +121,19 @@ export default {
     closeOthers: '关闭其它',
     closeAll: '关闭所有'
   },
+  messageBox: {
+    tip: '提示',
+    cancel: '取 消',
+    confirm: '确 定',
+    deleteOne: '确认删除该条记录吗？',
+    deleteMore: '确认删除选中的记录吗？',
+    success: '删除成功'
+  },
   permission: {
     userName: '用户名',
     password: '密码',
     email: '邮箱',
+    nickName: '昵称',
     createdAt: '创建时间',
     status: '状态',
     options: '操作',
@@ -131,7 +141,9 @@ export default {
     isActivate: '是否激活',
     activate: '激活',
     inactivate: '未激活',
-    user: '添加/修改用户',
+    add: '添加用户',
+    edit: '编辑用户',
+    view: '用户详细信息',
     roleName: '角色名',
     ruleName: '规则名',
     permissionName: '权限名',
@@ -144,7 +156,8 @@ export default {
       nameSize: '长度在2-10个字符之间',
       enterPassword: '请输入密码',
       passwordSize: '长度在6-16个字符之间',
-      enterEmail: '请输入邮箱'
+      enterEmail: '请输入邮箱',
+      enterNickName: '请输入昵称'
     }
   }
 }

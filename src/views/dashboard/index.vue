@@ -31,7 +31,7 @@ export default {
   name: "dashboard",
   components: {
     baiduMap,
-    treePanel
+    treePanel,
   },
   data() {
     return {

@@ -5,32 +5,67 @@
         <span class="title">菜单列表</span>
         <el-button style="float: right;" @click="addMenuItem(null)" type="primary">添加菜单</el-button>
       </div>
-      <tree-table :data="menuData" :columns="columns" border>
-        <el-table-column header-align="center" align="center" label="状态" width="100">
-          <template slot-scope="scope">
-            <el-tag>{{scope.row.status}}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column header-align="center" align="center" label="显示" width="100">
-          <template slot-scope="scope">
-            <el-tag>{{scope.row.show}}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column header-align="center" align="center" label="菜单图表" width="100">
-          <template slot-scope="scope">
-            <i class="el-icon-edit"></i>
-          </template>
-        </el-table-column>
-        <el-table-column header-align="center" align="center" label="可选操作">
-          <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="addMenuItem(scope)">添加子类</el-button>
-            <el-button type="success" size="mini">查看</el-button>
-            <el-button type="info" size="mini">改变状态</el-button>
-            <el-button type="warning" size="mini">编辑</el-button>
-            <el-button type="danger" size="mini">删除</el-button>
-          </template>
-        </el-table-column>
-      </tree-table>
+      <draggable v-model="menuData" :options="{draggable:'.el-table__row'}" @start="drag=true" @end="drag=false">
+        <tree-table :data="menuData" :columns="columns" border>
+          <el-table-column header-align="center" align="center" label="状态" width="100">
+            <template slot-scope="scope">
+              <el-tag>{{scope.row.status}}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column header-align="center" align="center" label="显示" width="100">
+            <template slot-scope="scope">
+              <el-tag>{{scope.row.show}}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column header-align="center" align="center" label="菜单图表" width="100">
+            <template slot-scope="scope">
+              <i class="el-icon-edit"></i>
+            </template>
+          </el-table-column>
+          <el-table-column header-align="center" align="center" label="可选操作">
+            <template slot-scope="scope">
+              <el-button type="primary" size="mini" @click="addMenuItem(scope)">添加子类</el-button>
+              <el-button type="success" size="mini">查看</el-button>
+              <el-button type="info" size="mini">改变状态</el-button>
+              <el-button type="warning" size="mini">编辑</el-button>
+              <el-button type="danger" size="mini">删除</el-button>
+            </template>
+          </el-table-column>
+        </tree-table>
+      </draggable>
+      <table  style="width: 100%; border: 1px solid #666">
+        <thead>
+          <tr>
+            <th>name</th>
+            <th>email</th>
+            <th>age</th>
+          </tr>
+        </thead>
+
+        <tbody class="aa" v-for=" item in menuData">
+          <tr>
+            <td>
+              <button @click="item.a=!item.a" type="text">></button>
+              harley
+            </td>
+            <td>harley@guyzuz.com</td>
+            <td>12</td>
+          </tr>
+          <tr>
+            <tr v-for="items in item.children" v-show="item.a">
+              <td>aaa</td>
+              <td>aaa</td>
+              <td>aaa</td>
+            </tr>
+          </tr>
+        </tbody>
+
+      </table>
+      <div>
+        <div>
+
+        </div>
+      </div>
     </el-card>
 
     <!-- 弹窗 -->
@@ -76,14 +111,17 @@
 import treeTable from "@/components/treeTable";
 import Sortable from "sortablejs";
 import trim from "@/utils/index.js";
+import draggable from "vuedraggable";
 
 export default {
   name: "menuManager",
   components: {
-    treeTable
+    treeTable,
+    draggable
   },
   data() {
     return {
+      a: false,
       menuDialog: false,
       func: "treeToArray",
       expandAll: false,
@@ -182,9 +220,18 @@ export default {
           show: "是",
           icon: "",
           routes: ["system"],
+          a: false,
           children: [
             {
               title: "菜单管理",
+              sort: 2,
+              status: "可用",
+              show: "是",
+              icon: "",
+              routes: ["system", "menu"]
+            },
+            {
+              title: "权限管理",
               sort: 1,
               status: "可用",
               show: "是",
@@ -216,6 +263,7 @@ export default {
           show: "是",
           icon: "",
           routes: ["system"],
+          a: false,
           children: [
             {
               title: "路灯管理",
@@ -275,45 +323,140 @@ export default {
       ],
       menuRules: {
         title: [{ required: true, message: "请输入菜单名称", trigger: "blur" }]
-      }
+      },
+
+      //
+      stop: false,
+      stop1: false,
+      a: 0
     };
   },
   mounted() {
-    let a=this.filterMenu(this.filterMenu, [], this.menuData, "用户管理");
-    console.log(this.a)
+    // var toNode = this.filterMenu(
+    //   this.filterMenu,
+    //   [],
+    //   this.menuData,
+    //   '设备管理'
+    // );
+    // var fromNode = this.filterMenu(
+    //   this.filterMenu,
+    //   [],
+    //   this.menuData,
+    //   "传感器"
+    // );
+    // console.log(toNode,fromNode)
+    this.a = 0;
+    // let el = document.getElementsByClassName("aa");
     let el = document.querySelectorAll(
-      ".el-table__body-wrapper > table > tbody"
+      ".aa"
     )[0];
-    let sortable = Sortable.create(el, {
-      onEnd: evt => {
-        const targetRow = this.menuData.splice(evt.oldIndex, 1)[0];
-        this.menuData.splice(evt.newIndex, 0, targetRow);
-        console.log(evt);
-        //先判断拖拽列表的级别
-        let menuName = trim(evt.item.cells[0].innerText);
-      }
-    });
+    var sortable = Sortable.create(el);
+
+    // let sortable = Sortable.create(el, {
+    //   onEnd: evt => {
+    //     console.log(evt);
+    //     // // 先判断拖拽列表的级别
+    //     // let menuName = trim(evt.item.cells[0].innerText);
+    //     // //获取要删除的节点
+    //     // var fromNode = this.filterMenu(
+    //     //   this.filterMenu,
+    //     //   [],
+    //     //   this.menuData,
+    //     //   menuName
+    //     // );
+    //     // var resArr1 = this.menuData.slice();
+    //     // var resArr = this.toString(resArr1, this.sortArray(fromNode));
+    //     // //获取要插入的位置
+    //     // var toNode = this.filterMenu1(
+    //     //   this.filterMenu1,
+    //     //   [],
+    //     //   this.menuData,
+    //     //   evt.newIndex
+    //     // );
+    //     // const targetNow = resArr.splice(fromNode[fromNode.length - 1], 1)[0];
+
+    //     // resArr.splice(toNode[toNode.length - 1], 0, targetNow);
+    //     // console.log(resArr, this.menuData, fromNode, toNode);
+
+    //     // const b = this.toString(this.menuData,this.sortArray(toNode));
+    //   }
+    // });
   },
   methods: {
+    //获取数组下标形式[0,2]   通过menuname
     filterMenu: function(callback, arr1, data, menuName) {
       if (data) {
-        data.forEach((element, index, arr) => {
+        data.map((element, index, arr) => {
           if (element.title === menuName) {
             arr1.push(index);
-            this.a=arr1;
-            console.log(this.a, element.title);
+            this.stop = true;
           } else {
-            if (element.children) {
-              arr1.push(index);
-              callback(callback, arr1, element.children, menuName);
-            } else {
-            }
-            if (index == arr.length - 1) {
-              arr1.splice(arr1.length - 1, 1);
+            if (this.stop === false) {
+              if (element.children) {
+                arr1.push(index);
+                callback(callback, arr1, element.children, menuName);
+              } else {
+                if (index == arr.length - 1) {
+                  arr1.splice(arr1.length - 1, 1);
+                }
+              }
             }
           }
         });
+        return arr1;
       }
+    },
+    //获取数组下标形式[0,2]   通过index
+    filterMenu1: function(callback, arr1, data, eindex) {
+      if (data) {
+        data.map((element, index, arr) => {
+          this.a++;
+          if (eindex === this.a - 1) {
+            arr1.push(index);
+            this.stop1 = true;
+          } else {
+            if (this.stop1 === false) {
+              if (element.children) {
+                arr1.push(index);
+                callback(callback, arr1, element.children, eindex);
+              } else {
+                if (index == arr.length - 1) {
+                  arr1.splice(arr1.length - 1, 1);
+                }
+              }
+            }
+          }
+        });
+        return arr1;
+      }
+    },
+    //处理数组
+    sortArray: function(arr) {
+      var arr1 = [];
+      arr.map((element, index, arr) => {
+        if (index === arr.length - 1 && index !== 0) {
+          arr1.push("children");
+        } else {
+          if (index % 2 === 1) {
+            arr1.push("children");
+            arr1.push(element);
+          } else {
+            arr1.push(element);
+          }
+        }
+      });
+      return arr1;
+    },
+    toString: function(value, path, df = undefined) {
+      return (
+        (!Array.isArray(path)
+          ? path
+              .replace(/\[/g, ".")
+              .replace(/\]/g, "")
+              .split(".")
+          : path
+        ).reduce((o, k) => (o || {})[k], value) || df
+      );
     },
     selectParent: function(e) {
       console.log(e);

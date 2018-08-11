@@ -27,5 +27,6 @@ export default function treeToArray(data, expandAll, parent = null, level = null
       tmp = tmp.concat(children)
     }
   })
+  console.log(tmp)
   return tmp
 }

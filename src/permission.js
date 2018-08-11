@@ -20,8 +20,8 @@ router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
   if (1) { // determine if there has token
     /* has token*/
-    if (to.path === '/login') {
-      next({ path: '/' })
+    if (to.path === '/login1') {
+      next({ path: '/login' })
       NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
     } else {
       if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user_info信息

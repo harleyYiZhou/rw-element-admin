@@ -36,6 +36,9 @@ export const constantRouterMap = [
       name: 'dashboard',
       meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
     }]
+  },
+  {
+    path: '/active',component: ()=> import('@/views/active/index'),hidden:true
   }
 ]
 
